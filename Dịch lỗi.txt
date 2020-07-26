@@ -1,0 +1,16 @@
+The function call precision_score(y_test, y_pred) is equivalent to precision_score(y_test, y_pred, pos_label=1, average='binary'). The documentation (http://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html) tells us:
+
+'binary':
+
+Only report results for the class specified by pos_label. This is applicable only if targets (y_{true,pred}) are binary.
+
+So the problem is that your labels are not binary, but probably one-hot encoded. Fortunately, there are other options which should work with your data:
+
+precision_score(y_test, y_pred, average=None) will return the precision scores for each class, while
+
+precision_score(y_test, y_pred, average='micro') will return the total ratio of tp/(tp + fp)
+
+The pos_label argument will be ignored if you choose another average option than binary.
+Lỗi:
+  raise ValueError("Target is %s but average='binary'. Please "
+ValueError: Target is multiclass but average='binary'. Please choose another average setting, one of [None, 'micro', 'macro', 'weighted'].
