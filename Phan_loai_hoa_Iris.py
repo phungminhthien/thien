@@ -6,24 +6,25 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import xarray as xr
 from sklearn import neighbors, datasets
 
 # In[94]:
-iris =datasets.load_iris()
-# iris = datasets.load_wine()
+# iris =datasets.load_iris()
+iris = datasets.load_wine()
 iris_X = iris.data
 iris_y = iris.target
 # print(iris_X)
 # print(iris_y)
 print('Number of classes: %d' %len(np.unique(iris_y)))
 print('Number of data points: %d' %len(iris_y))
-X0 = iris_X[iris_y == 0,:]
+X0 = np.array(iris_X[iris_y >= 0,:],dtype='object')
 print('\nSamples from class 0:\n', X0[:5,:])
 
-X1 = iris_X[iris_y == 1,:]
+X1 = np.array(iris_X[iris_y >= 1,:],dtype='object')
 print('\nSamples from class 1:\n', X1[:5,:])
 
-X2 = iris_X[iris_y == 2,:]
+X2 = np.array(iris_X[iris_y >= 2,:],dtype='object')
 print('\nSamples from class 2:\n', X2[:5,:])
 
 # In[96]:
@@ -43,6 +44,7 @@ y_feature = -1 # lấy cột cuối cùng
 plt.scatter(iris.data[:, x_feature], iris.data[:, y_feature], c=iris.target)
 plt.xlabel(iris.feature_names[x_feature])
 plt.ylabel(iris.feature_names[y_feature])
+plt.show()
 
 
 # In[98]:
@@ -87,8 +89,8 @@ print(classification_report(y_test, y_pred))
 # Test
 print('\nKiểm tra phân loại hoa thử: ')
 print('\nHoa có 4 kích thước là: [6.3, 2.3, 4.4, 1.3]')
-# test1 = knn.predict([[14.23,1.71,2.43,15.6,127,2.8,3.06,0.28,2.29,5.64,1.04,3.92,1065]])
-test1 = knn.predict([[6.3, 2.3, 4.4, 1.3]])
+test1 = knn.predict([[14.23,1.71,2.43,15.6,127.0,2.8,3.06,0.28,2.29,5.64,1.04,3.92,1065.0]])
+# test1 = knn.predict([[6.3, 2.3, 4.4, 1.3]])
 print('Kết quả dự đoán là loại: ',iris.target_names[test1])
 print('Kết quả thực tế là: versicolor')
 
@@ -119,7 +121,3 @@ plt.plot(range(1, 40), error, color='red', linestyle='dashed', marker='o',
 plt.title('Error Rate K Value')
 plt.xlabel('K Value')
 plt.ylabel('Mean Error')
-
-
-
-
