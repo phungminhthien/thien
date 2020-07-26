@@ -7,7 +7,8 @@ from sklearn import svm
 import numpy as np
 import matplotlib.pyplot as plt
 #Load dataset
-cancer = datasets.load_breast_cancer()
+cancer = datasets.load_digits()
+# cancer = datasets.load_breast_cancer()
 
 # Split dataset into training set and test set
 X_train, X_test, y_train, y_test = train_test_split(cancer.data, cancer.target, test_size=0.3,random_state=109)
@@ -27,7 +28,6 @@ y_pred = clf.predict(X_test)
 
 #Import scikit-learn metrics module for accuracy calculation
 from sklearn import metrics
-
 x_feature = -2 # index âm, lấy cột thứ 2 từ phải sang
 y_feature = -1 # lấy cột cuối cùng
 plt.scatter(cancer.data[:, x_feature], cancer.data[:, y_feature], c=cancer.target)
@@ -47,10 +47,15 @@ print(np.array(cancer.data[0:5],dtype='object'))
 # print the cancer labels (0:malignant, 1:benign)
 print(cancer.target)
 # Model Precision: what percentage of positive tuples are labeled as such?
-print("Precision:",metrics.precision_score(y_test, y_pred))
+# print("Precision:",metrics.precision_score(y_test, y_pred))
+print("Precision:",metrics.precision_score(y_test, y_pred, average='micro'))
+# micro ra điểm tổng cho tất cả class
+# None ra điểm cho  từng class
+
 
 # Model Recall: what percentage of positive tuples are labelled as such?
-print("Recall:",metrics.recall_score(y_test, y_pred))
+# print("Recall:",metrics.recall_score(y_test, y_pred))
+print("Recall:",metrics.recall_score(y_test, y_pred, average='micro'))
 
 from sklearn.metrics import classification_report, confusion_matrix
 print(confusion_matrix(y_test, y_pred))
